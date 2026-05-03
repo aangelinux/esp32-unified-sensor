@@ -41,10 +41,12 @@ void publish(float temperature, float humidity) {
     reconnect();
   }
 
-  // Create string payload with data here
+  String data = 
+    "Temperature: " + String(temperature) + 
+    "\nHumidity: " + String(humidity);
 
   client.loop();
-  client.publish("lnu/iot/al227bn/sensor", "");
+  client.publish("lnu/iot/al227bn/sensor", data.c_str());
   delay(5000);
 }
 
