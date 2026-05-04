@@ -1,4 +1,4 @@
 [wokwi]
 version = 1
-firmware = 'path-to-your-firmware.hex'
-elf = 'path-to-your-firmware.elf'
+firmware = '.pio/build/mhetesp32devkit/firmware.bin'
+elf = '.pio/build/mhetesp32devkit/firmware.elf'

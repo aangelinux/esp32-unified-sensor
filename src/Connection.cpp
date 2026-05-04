@@ -1,5 +1,6 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#include "State.hpp"
 
 const char* ssid = "Wokwi-GUEST";
 const char* password = "";
@@ -22,11 +23,31 @@ void setupConnection() {
   client.setServer(mqttServer, mqttPort);
 }
 
+void callback(char* topic, byte* payload, unsigned int length) {
+  String message;
+
+  for (int i = 0; i < length; i++) {
+    message += (char)payload[i];
+  }
+
+  if (topic == "lnu/iot/al227bn/command/led") {
+    state.ledUpdated = true;
+    
+    if (message == "ON") {
+      state.ledOn = true;
+    } else {
+      state.ledOn = false;
+    }
+  }
+}
+
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Connecting to MQTT...");
 
     if (client.connect("ESP32Client")) {
+      client.subscribe("lnu/iot/al227bn/command/led");
+      client.setCallback(callback);
       Serial.println("Connected");
     } else {
       Serial.print("Failed, rc=");
@@ -47,17 +68,4 @@ void publish(float temperature, float humidity) {
 
   client.loop();
   client.publish("lnu/iot/al227bn/sensor", data.c_str());
-  delay(5000);
-}
-
-bool subscribe() {
-  if (!client.connected()) {
-    reconnect();
-  }
-
-  client.loop();
-  bool state = client.subscribe("lnu/iot/al227bn/command/led");
-  delay(5000);
-  
-  return state;
 }

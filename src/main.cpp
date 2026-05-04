@@ -2,6 +2,7 @@
 #include "Led.hpp"
 #include "Sensor.hpp"
 #include "Connection.hpp"
+#include "State.hpp"
 
 void setup() {
   setupLED(2);
@@ -10,9 +11,9 @@ void setup() {
 }
 
 void loop() {
-  bool state = subscribe();
-
-  toggleLED(2, state);
+  if (state.ledUpdated) {
+    toggleLED(2);
+  }
 
   float temperature = getTemperature();
   float humidity = getHumidity();

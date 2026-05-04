@@ -1,4 +1,4 @@
 void setupConnection();
 void reconnect();
 void publish(float, float);
-bool subscribe();
+void callback(char*, byte*, unsigned int);
