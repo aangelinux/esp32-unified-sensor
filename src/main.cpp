@@ -4,6 +4,8 @@
 #include "Connection.hpp"
 #include "State.hpp"
 
+unsigned long timeSincePublish;
+
 void setup() {
   setupLED(2);
   setupSensor();
@@ -15,8 +17,12 @@ void loop() {
     toggleLED(2);
   }
 
-  float temperature = getTemperature();
-  float humidity = getHumidity();
+  if ((millis() - timeSincePublish) > 5000) {
+    timeSincePublish = millis();
 
-  publish(temperature, humidity);
+    float temperature = getTemperature();
+    float humidity = getHumidity();
+
+    publish(temperature, humidity);
+  }
 }
