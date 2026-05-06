@@ -9,8 +9,7 @@ DHT_Unified dht(DHTPIN, DHTTYPE);
 
 void setupSensor() {
   Serial.begin(9600);
-
-  // Initialize device.
+  
   dht.begin();
   Serial.println(F("DHT22 Unified Sensor"));
 
@@ -28,14 +27,12 @@ void setupSensor() {
   dht.humidity().getSensor(&sensor);
   Serial.println(F("Humidity Sensor"));
   Serial.print  (F("Unique ID:   ")); Serial.println(sensor.sensor_id);
-  Serial.print  (F("Max Value:   ")); Serial.print(sensor.max_value); Serial.println(F("%"));
-  Serial.print  (F("Min Value:   ")); Serial.print(sensor.min_value); Serial.println(F("%"));
   Serial.println(F("------------------------------------"));
 }
 
 float getTemperature() {
-  // Delay between measurements.
   sensor_t sensor;
+  // Delay between measurements.
   uint32_t delay(sensor.min_delay / 100);
 
   sensors_event_t event;
@@ -43,8 +40,7 @@ float getTemperature() {
 
   if (isnan(event.temperature)) {
     Serial.println(F("Error reading temperature!"));
-  }
-  else {
+  } else {
     Serial.print(F("Temperature: "));
     Serial.print(event.temperature);
     Serial.println(F("°C"));
@@ -54,8 +50,8 @@ float getTemperature() {
 }
 
 float getHumidity() {
-  // Delay between measurements.
   sensor_t sensor;
+  // Delay between measurements.
   uint32_t delay(sensor.min_delay / 100);
 
   sensors_event_t event;
@@ -63,8 +59,7 @@ float getHumidity() {
 
   if (isnan(event.relative_humidity)) {
     Serial.println(F("Error reading humidity!"));
-  }
-  else {
+  } else {
     Serial.print(F("Humidity: "));
     Serial.print(event.relative_humidity);
     Serial.println(F("%"));
