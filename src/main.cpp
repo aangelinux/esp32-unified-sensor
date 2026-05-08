@@ -13,6 +13,8 @@ void setup() {
 }
 
 void loop() {
+  loopConnection();
+
   if (state.ledUpdated) {
     toggleLED(2);
   }
