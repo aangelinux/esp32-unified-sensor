@@ -70,9 +70,10 @@ void connect() {
 }
 
 void loopConnection() {
-  if (!client.connected())
+  if (!client.connected()) {
     connect();
-
+  }
+  
   client.loop();
 }
 
