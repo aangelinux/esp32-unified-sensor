@@ -1,6 +1,7 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
+#include <time.h>
 #include "State.hpp"
 
 const char* ssid = "Wokwi-GUEST";
@@ -51,6 +52,8 @@ void setupConnection() {
 
   Serial.println("Connected to WiFi");
   client.setServer(mqttServer, mqttPort);
+
+  configTime(0, 0, "pool.ntp.org"); // Sync clock with current time
 }
 
 void connect() {
@@ -79,8 +82,13 @@ void loopConnection() {
 
 void publish(float temperature, float humidity) {
   JsonDocument data;
+  time_t now = time(nullptr);
+  char datetime[30];
+  strftime(datetime, sizeof(datetime), "%Y-%m-%dT%H:%M:%SZ", gmtime(&now));
+
   data["temperature"] = temperature;
   data["humidity"] = humidity;
+  data["time"] = datetime;
 
   char output[256];
   serializeJson(data, output);
